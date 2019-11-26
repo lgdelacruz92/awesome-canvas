@@ -37,6 +37,7 @@
     "@fortawesome/react-fontawesome": "^0.1.7",
     "clsx": "^1.0.4",
     "dns-container": "^3.0.7",
+    "firebase": "^7.5.0",
     "install-peers": "^1.0.3",
     "prop-types": "^15.5.4",
     "react-editable-and-draggable-text-2": "^1.2.6",
