@@ -31,6 +31,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "7",
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.7",
@@ -40,6 +41,9 @@
     "prop-types": "^15.5.4",
     "react-editable-and-draggable-text-2": "^1.2.6",
     "react-image-drag-and-scale": "^3.0.2",
+    "rollup": "^1.27.5",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "typescript": "^3.7.2"
   }
 }
