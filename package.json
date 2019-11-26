@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.x",
+    "@material-ui/icons": "^4.5.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.2.0"
@@ -27,5 +29,17 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.25",
+    "@fortawesome/free-solid-svg-icons": "^5.11.2",
+    "@fortawesome/react-fontawesome": "^0.1.7",
+    "clsx": "^1.0.4",
+    "dns-container": "^3.0.7",
+    "install-peers": "^1.0.3",
+    "prop-types": "^15.5.4",
+    "react-editable-and-draggable-text-2": "^1.2.6",
+    "react-image-drag-and-scale": "^3.0.2",
+    "typescript": "^3.7.2"
   }
 }
