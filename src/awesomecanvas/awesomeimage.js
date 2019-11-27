@@ -4,7 +4,7 @@ import { toImageObj } from "./toImageObj";
 
 const AwesomeImage = props => {
   const { id, firebase, data } = props;
-  const [state, setState] = React.useState(data);
+  const [state, setState] = React.useState(null);
   React.useEffect(() => {
     firebase
       .collection("ImageContents")
@@ -17,16 +17,30 @@ const AwesomeImage = props => {
       });
   }, [id, firebase]);
   return (
-    <DNSImage
-      {...props}
-      data={state}
-      onChangeEnd={newData => {
-        console.log("new data", newData);
-      }}
-      onRemove={remove => console.log("remove", remove)}
-      onMoveUp={() => {}}
-      onMoveDown={() => {}}
-    />
+    <React.Fragment>
+      {state ? (
+        <DNSImage
+          {...props}
+          data={state}
+          onChangeEnd={newData => {
+            const imageContentRef = firebase
+              .collection("ImageContents")
+              .doc(id);
+            firebase.runTransaction(transaction => {
+              return transaction.get(imageContentRef).then(imageContentDoc => {
+                if (!imageContentDoc.exists) {
+                  throw Error("Image data does not exists");
+                }
+                transaction.update(imageContentRef, newData);
+              });
+            });
+          }}
+          onRemove={remove => console.log("remove", remove)}
+          onMoveUp={() => {}}
+          onMoveDown={() => {}}
+        />
+      ) : null}
+    </React.Fragment>
   );
 };
 
