@@ -4,6 +4,8 @@ import DNSContainer, { DNSImage } from "dns-container";
 const AwesomeCanvas = props => {
   const _onChangeEnd = newData => {
     console.log("changed seem", newData);
+    state[newData.id].data = newData;
+    setState({ ...state });
   };
 
   const _onRemove = dataId => {
@@ -48,6 +50,7 @@ const AwesomeCanvas = props => {
   });
 
   const [history, setHistory] = React.useState([]);
+  const [historyPos, setHistoryPos] = React.useState(-1);
 
   React.useEffect(() => {
     let time = 0;
@@ -69,8 +72,12 @@ const AwesomeCanvas = props => {
   }, []);
 
   React.useEffect(() => {
-    setHistory(h => [{ ...state }]);
+    setHistory(h => [...h, state]);
   }, [state]);
+
+  React.useEffect(() => {
+    setHistoryPos(history.length - 1);
+  }, [history]);
 
   return (
     <DNSContainer {...props}>
