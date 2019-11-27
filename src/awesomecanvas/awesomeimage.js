@@ -4,7 +4,6 @@ import { toImageObj } from "./toImageObj";
 
 const AwesomeImage = React.forwardRef((props, ref) => {
   const { id, firebase, data, onChange } = props;
-  console.log("data=", data);
   const [state, setState] = React.useState(data);
   React.useEffect(() => {
     firebase
@@ -16,7 +15,8 @@ const AwesomeImage = React.forwardRef((props, ref) => {
           setState(toImageObj(docQuery));
         }
       });
-  }, [id, firebase]);
+    ref.current = data;
+  }, [id, firebase, ref, data]);
   return (
     <React.Fragment>
       {state ? (

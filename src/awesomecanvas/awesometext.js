@@ -15,7 +15,13 @@ const AwesomeText = React.forwardRef((props, ref) => {
           setState(toTextObj(docQuery));
         }
       });
+
+    // eslint-disable-next-line
   }, [id, firebase]);
+
+  React.useEffect(() => {
+    ref.current = state;
+  });
   return (
     <React.Fragment>
       {state ? (
