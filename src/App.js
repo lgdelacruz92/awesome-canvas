@@ -14,6 +14,7 @@ function App() {
           onChangeEnd={(e, newData) => {}}
           onRemove={() => {}}
           onMoveUp={() => {}}
+          onMoveDown={() => {}}
         />
       </AwesomeCanvas>
     </div>

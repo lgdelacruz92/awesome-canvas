@@ -1,7 +1,23 @@
 import React from "react";
-import DNSContainer from "dns-container";
+import DNSContainer, { DNSImage } from "dns-container";
 
 const AwesomeCanvas = props => {
+  const _onChangeEnd = newData => {
+    console.log("changed seem", newData);
+  };
+
+  const _onRemove = dataId => {
+    console.log("chane remove data", dataId);
+  };
+
+  const _onMoveUp = dataId => {
+    console.log("seem move up dataId", dataId);
+  };
+
+  const _onMoveDown = dataId => {
+    console.log("seem move down", dataId);
+  };
+
   const [state, setState] = React.useState(() => {
     const children = React.Children.toArray(props.children);
 
@@ -10,10 +26,22 @@ const AwesomeCanvas = props => {
       let childId = child.props.data.id;
       startState[childId] = {
         data: child.props.data,
-        onChangeEnd: child.props.onChangeEnd,
-        onRemove: child.props.onRemove,
-        onMoveUp: child.props.onMoveUp,
-        onMoveDown: child.props.onMoveDown
+        onChangeEnd: newData => {
+          _onChangeEnd(newData);
+          child.props.onChangeEnd(newData);
+        },
+        onRemove: () => {
+          _onRemove(childId);
+          child.props.onRemove();
+        },
+        onMoveUp: () => {
+          _onMoveUp(childId);
+          child.props.onMoveUp();
+        },
+        onMoveDown: () => {
+          _onMoveDown(childId);
+          child.props.onMoveDown();
+        }
       };
     });
     return startState;
@@ -38,7 +66,20 @@ const AwesomeCanvas = props => {
     return () => document.removeEventListener("keydown", onUndo);
   }, []);
 
-  return <DNSContainer {...props}></DNSContainer>;
+  return (
+    <DNSContainer {...props}>
+      {Object.keys(state).map(key => (
+        <DNSImage
+          key={key}
+          data={state[key].data}
+          onChangeEnd={state[key].onChangeEnd}
+          onRemove={state[key].onRemove}
+          onMoveUp={state[key].onMoveUp}
+          onMoveDown={state[key].onMoveDown}
+        />
+      ))}
+    </DNSContainer>
+  );
 };
 
 export default AwesomeCanvas;
