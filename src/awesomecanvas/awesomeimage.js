@@ -2,7 +2,7 @@ import React from "react";
 import { DNSImage } from "dns-container";
 import { toImageObj } from "./toImageObj";
 
-const AwesomeImage = props => {
+const AwesomeImage = React.forwardRef((props, ref) => {
   const { id, firebase, data } = props;
   const [state, setState] = React.useState(null);
   React.useEffect(() => {
@@ -34,6 +34,7 @@ const AwesomeImage = props => {
                 transaction.update(imageContentRef, newData);
               });
             });
+            ref.current = newData;
           }}
           onRemove={remove => console.log("remove", remove)}
           onMoveUp={() => {}}
@@ -42,6 +43,6 @@ const AwesomeImage = props => {
       ) : null}
     </React.Fragment>
   );
-};
+});
 
 export default AwesomeImage;

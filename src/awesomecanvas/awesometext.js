@@ -2,7 +2,7 @@ import React from "react";
 import { DNSText } from "dns-container";
 import { toTextObj } from "./toTextObj";
 
-const AwesomeText = props => {
+const AwesomeText = React.forwardRef((props, ref) => {
   const { id, firebase, data } = props;
   const [state, setState] = React.useState(null);
   React.useEffect(() => {
@@ -32,6 +32,7 @@ const AwesomeText = props => {
                 transaction.update(textContentRef, newData);
               });
             });
+            ref.current = newData;
           }}
           onRemove={remove => console.log("remove", remove)}
           onMoveUp={() => {}}
@@ -40,6 +41,6 @@ const AwesomeText = props => {
       ) : null}
     </React.Fragment>
   );
-};
+});
 
 export default AwesomeText;
