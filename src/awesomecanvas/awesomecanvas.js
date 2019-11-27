@@ -47,6 +47,8 @@ const AwesomeCanvas = props => {
     return startState;
   });
 
+  const [history, setHistory] = React.useState([]);
+
   React.useEffect(() => {
     let time = 0;
     const onUndo = e => {
@@ -65,6 +67,10 @@ const AwesomeCanvas = props => {
     document.addEventListener("keydown", onUndo);
     return () => document.removeEventListener("keydown", onUndo);
   }, []);
+
+  React.useEffect(() => {
+    setHistory(h => [{ ...state }]);
+  }, [state]);
 
   return (
     <DNSContainer {...props}>
