@@ -3,8 +3,9 @@ import { DNSImage } from "dns-container";
 import { toImageObj } from "./toImageObj";
 
 const AwesomeImage = React.forwardRef((props, ref) => {
-  const { id, firebase, data } = props;
-  const [state, setState] = React.useState(null);
+  const { id, firebase, data, onChange } = props;
+  console.log("data=", data);
+  const [state, setState] = React.useState(data);
   React.useEffect(() => {
     firebase
       .collection("ImageContents")
@@ -35,6 +36,7 @@ const AwesomeImage = React.forwardRef((props, ref) => {
               });
             });
             ref.current = newData;
+            onChange(ref.current);
           }}
           onRemove={remove => console.log("remove", remove)}
           onMoveUp={() => {}}

@@ -3,8 +3,8 @@ import { DNSText } from "dns-container";
 import { toTextObj } from "./toTextObj";
 
 const AwesomeText = React.forwardRef((props, ref) => {
-  const { id, firebase, data } = props;
-  const [state, setState] = React.useState(null);
+  const { id, firebase, data, onChange } = props;
+  const [state, setState] = React.useState(data);
   React.useEffect(() => {
     firebase
       .collection("TextContents")
@@ -33,6 +33,7 @@ const AwesomeText = React.forwardRef((props, ref) => {
               });
             });
             ref.current = newData;
+            onChange(ref.current);
           }}
           onRemove={remove => console.log("remove", remove)}
           onMoveUp={() => {}}

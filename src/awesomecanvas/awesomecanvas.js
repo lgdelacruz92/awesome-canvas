@@ -11,8 +11,15 @@ const AwesomeCanvas = props => {
     });
   }
 
+  const onChange = data => {
+    console.log(data, "changed");
+  };
+
   const childrenClones = children.map((child, i) =>
-    React.cloneElement(child, { ref: childrenRefs.current[i] })
+    React.cloneElement(child, {
+      ref: childrenRefs.current[i],
+      onChange
+    })
   );
 
   return <DNSContainer {...props}>{childrenClones}</DNSContainer>;
