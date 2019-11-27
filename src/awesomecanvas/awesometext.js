@@ -3,13 +3,9 @@ import { DNSText } from "dns-container";
 import { toTextObj } from "./toTextObj";
 
 const AwesomeText = React.forwardRef((props, ref) => {
-  const { id, firebase, data, onChange } = props;
-  data.id = id;
+  const { id, firebase, data, onChange, onLoad } = props;
   const [state, setState] = React.useState(data);
-
-  React.useEffect(() => {
-    updateRef({ content: state });
-  });
+  const [ready, setReady] = React.useState(false);
 
   const update = data => {
     setState({ ...data });
@@ -22,6 +18,14 @@ const AwesomeText = React.forwardRef((props, ref) => {
       ref.current = item;
     }
   };
+
+  React.useEffect(() => {
+    updateRef({ content: state });
+    if (state.id !== data.id) {
+      setReady(true);
+    }
+    onLoad(ready, id);
+  });
 
   React.useEffect(() => {
     firebase
@@ -39,6 +43,7 @@ const AwesomeText = React.forwardRef((props, ref) => {
 
   React.useEffect(() => {
     updateRef({ update });
+    // eslint-disable-next-line
   }, []);
 
   return (

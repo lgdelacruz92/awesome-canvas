@@ -2,34 +2,22 @@ import React from "react";
 import DNSContainer from "dns-container";
 
 const AwesomeCanvas = props => {
-  const children = React.Children.toArray(props.children);
-  const childrenRefs = React.useRef([]);
-  const [history, setHistory] = React.useState({});
+  const [state, setState] = React.useState(() => {
+    const children = React.Children.toArray(props.children);
 
-  if (childrenRefs.current.length <= 0) {
+    let startState = {};
     children.forEach(child => {
-      childrenRefs.current.push(React.createRef());
+      let childId = child.props.data.id;
+      startState[childId] = {
+        data: child.props.data,
+        onChangeEnd: child.props.onChangeEnd,
+        onRemove: child.props.onRemove,
+        onMoveUp: child.props.onMoveUp,
+        onMoveDown: child.props.onMoveDown
+      };
     });
-  }
-
-  const onChange = data => {
-    console.log("On change");
-  };
-
-  const childrenClones = children.map((child, i) =>
-    React.cloneElement(child, {
-      ref: childrenRefs.current[i],
-      onChange
-    })
-  );
-
-  React.useEffect(() => {
-    childrenClones.forEach(child => {
-      setHistory(h => ({ ...h, [child.props.id]: [] }));
-    });
-
-    // eslint-disable-next-line
-  }, []);
+    return startState;
+  });
 
   React.useEffect(() => {
     let time = 0;
@@ -50,7 +38,7 @@ const AwesomeCanvas = props => {
     return () => document.removeEventListener("keydown", onUndo);
   }, []);
 
-  return <DNSContainer {...props}>{childrenClones}</DNSContainer>;
+  return <DNSContainer {...props}></DNSContainer>;
 };
 
 export default AwesomeCanvas;
