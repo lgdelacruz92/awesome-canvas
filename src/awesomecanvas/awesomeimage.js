@@ -15,8 +15,23 @@ const AwesomeImage = React.forwardRef((props, ref) => {
           setState(toImageObj(docQuery));
         }
       });
-    ref.current = data;
+    updateRef({ content: data });
   }, [id, firebase, ref, data]);
+  const update = data => {
+    console.log("Updated", data);
+  };
+
+  const updateRef = item => {
+    if (ref.current) {
+      ref.current = { ...ref.current, ...item };
+    } else {
+      ref.current = item;
+    }
+  };
+
+  React.useEffect(() => {
+    updateRef({ update: update });
+  }, []);
   return (
     <React.Fragment>
       {state ? (
@@ -35,7 +50,7 @@ const AwesomeImage = React.forwardRef((props, ref) => {
                 transaction.update(imageContentRef, newData);
               });
             });
-            ref.current = newData;
+            updateRef({ content: newData });
             onChange(ref.current);
           }}
           onRemove={remove => console.log("remove", remove)}

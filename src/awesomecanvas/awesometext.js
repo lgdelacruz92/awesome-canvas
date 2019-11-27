@@ -20,8 +20,25 @@ const AwesomeText = React.forwardRef((props, ref) => {
   }, [id, firebase]);
 
   React.useEffect(() => {
-    ref.current = state;
+    updateRef({ content: state });
   });
+
+  const update = data => {
+    console.log("Updated", data);
+  };
+
+  const updateRef = item => {
+    if (ref.current) {
+      ref.current = { ...ref.current, ...item };
+    } else {
+      ref.current = item;
+    }
+  };
+
+  React.useEffect(() => {
+    updateRef({ update });
+  }, []);
+
   return (
     <React.Fragment>
       {state ? (
@@ -38,7 +55,7 @@ const AwesomeText = React.forwardRef((props, ref) => {
                 transaction.update(textContentRef, newData);
               });
             });
-            ref.current = newData;
+            updateRef({ content: newData });
             onChange(ref.current);
           }}
           onRemove={remove => console.log("remove", remove)}
