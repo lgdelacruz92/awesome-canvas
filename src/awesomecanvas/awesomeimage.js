@@ -4,21 +4,11 @@ import { toImageObj } from "./toImageObj";
 
 const AwesomeImage = React.forwardRef((props, ref) => {
   const { id, firebase, data, onChange } = props;
+  data.id = id;
   const [state, setState] = React.useState(data);
-  React.useEffect(() => {
-    firebase
-      .collection("ImageContents")
-      .doc(id)
-      .get()
-      .then(docQuery => {
-        if (docQuery.exists) {
-          setState(toImageObj(docQuery));
-        }
-      });
-    updateRef({ content: data });
-  }, [id, firebase, ref, data]);
+
   const update = data => {
-    console.log("Updated", data);
+    setState({ ...data });
   };
 
   const updateRef = item => {
@@ -30,6 +20,29 @@ const AwesomeImage = React.forwardRef((props, ref) => {
   };
 
   React.useEffect(() => {
+    console.log("image update ref with content useeffect 1", { ...state });
+    updateRef({ content: state });
+  });
+
+  React.useEffect(() => {
+    console.log("image update ref with content useeffect 2");
+
+    firebase
+      .collection("ImageContents")
+      .doc(id)
+      .get()
+      .then(docQuery => {
+        if (docQuery.exists) {
+          setState(toImageObj(docQuery));
+        }
+      });
+  }, [id, firebase, ref, data]);
+
+  React.useEffect(() => {
+    console.log(
+      "image update ref with content useeffect 3 ( attatching update)"
+    );
+
     updateRef({ update: update });
   }, []);
   return (

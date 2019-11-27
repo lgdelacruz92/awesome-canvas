@@ -4,7 +4,25 @@ import { toTextObj } from "./toTextObj";
 
 const AwesomeText = React.forwardRef((props, ref) => {
   const { id, firebase, data, onChange } = props;
+  data.id = id;
   const [state, setState] = React.useState(data);
+
+  React.useEffect(() => {
+    updateRef({ content: state });
+  });
+
+  const update = data => {
+    setState({ ...data });
+  };
+
+  const updateRef = item => {
+    if (ref.current) {
+      ref.current = { ...ref.current, ...item };
+    } else {
+      ref.current = item;
+    }
+  };
+
   React.useEffect(() => {
     firebase
       .collection("TextContents")
@@ -18,22 +36,6 @@ const AwesomeText = React.forwardRef((props, ref) => {
 
     // eslint-disable-next-line
   }, [id, firebase]);
-
-  React.useEffect(() => {
-    updateRef({ content: state });
-  });
-
-  const update = data => {
-    console.log("Updated", data);
-  };
-
-  const updateRef = item => {
-    if (ref.current) {
-      ref.current = { ...ref.current, ...item };
-    } else {
-      ref.current = item;
-    }
-  };
 
   React.useEffect(() => {
     updateRef({ update });

@@ -5,7 +5,6 @@ const AwesomeCanvas = props => {
   const children = React.Children.toArray(props.children);
   const childrenRefs = React.useRef([]);
   const [history, setHistory] = React.useState({});
-  const [historyPos, setHistoryPos] = React.useState(0);
 
   if (childrenRefs.current.length <= 0) {
     children.forEach(child => {
@@ -14,20 +13,7 @@ const AwesomeCanvas = props => {
   }
 
   const onChange = data => {
-    const childrenReferences = childrenRefs.current;
-    childrenReferences.forEach(childRef => {
-      const content = childRef.current.content;
-      if (content) {
-        let childHistory = history[content.id];
-        const isHistoryFull = childHistory.length > 20;
-        if (isHistoryFull) {
-          childHistory.splice(0, 1);
-        }
-        childHistory.push(content);
-      }
-    });
-    setHistory({ ...history });
-    setHistoryPos(historyPos + 1);
+    console.log("On change");
   };
 
   const childrenClones = children.map((child, i) =>
@@ -56,18 +42,13 @@ const AwesomeCanvas = props => {
       if (e.key === "z") {
         const isPressedAtTheSameTime = Date.now() - time < 200;
         if (isPressedAtTheSameTime) {
-          if (historyPos > 0) {
-            const childrenReferences = childrenRefs.current;
-            childrenReferences.forEach(childRef => {
-              childRef.current.update("test");
-            });
-          }
+          console.log("undo");
         }
       }
     };
     document.addEventListener("keydown", onUndo);
     return () => document.removeEventListener("keydown", onUndo);
-  }, [historyPos]);
+  }, []);
 
   return <DNSContainer {...props}>{childrenClones}</DNSContainer>;
 };
