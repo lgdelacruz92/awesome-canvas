@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import AwesomeCanvas from "./awesomecanvas/awesomecanvas";
 import AwesomeImage from "./awesomecanvas/awesomeimage";
+import AwesomeText from "./awesomecanvas/awesometext";
 import { defaultImage } from "./awesomecanvas/defaultImage";
 
 import firebase from "./firebase";
@@ -12,6 +13,11 @@ function App() {
       <AwesomeCanvas width={500} height={700}>
         <AwesomeImage
           id="J2rtyvOciilRkGvQt7Ia"
+          firebase={firebase}
+          data={defaultImage}
+        />
+        <AwesomeText
+          id="U7icFPMOUxMONbbcW1Rk"
           firebase={firebase}
           data={defaultImage}
         />
