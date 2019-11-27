@@ -1,10 +1,11 @@
 import React from "react";
 import DNSContainer, { DNSImage } from "dns-container";
+import uuid from "react-uuid";
 
 const AwesomeCanvas = props => {
   const _onChangeEnd = newData => {
     console.log("changed seem", newData);
-    state[newData.id].data = newData;
+    state[newData.id].data = { ...newData };
     setState({ ...state });
   };
 
@@ -48,7 +49,6 @@ const AwesomeCanvas = props => {
     });
     return startState;
   });
-
   const [history, setHistory] = React.useState([]);
   const [historyPos, setHistoryPos] = React.useState(-1);
 
@@ -63,16 +63,54 @@ const AwesomeCanvas = props => {
       if (e.key === "z") {
         const isPressedAtTheSameTime = Date.now() - time < 200;
         if (isPressedAtTheSameTime) {
-          console.log("undo");
+          console.log("undo", historyPos);
+
+          if (historyPos > 0) {
+            let prevState = history[historyPos - 1];
+            let newState = {};
+            Object.keys(prevState).forEach(prevStateId => {
+              let prevStateData = prevState[prevStateId];
+              newState[prevStateId] = {
+                data: JSON.parse(JSON.stringify(prevStateData.data)),
+                onChangeEnd: prevStateData.onChangeEnd,
+                onRemove: prevStateData.onRemove,
+                onMoveUp: prevStateData.onMoveUp,
+                onMoveDown: prevStateData.onMoveDown
+              };
+            });
+            console.log("New State");
+            setState(newState);
+          }
         }
       }
     };
     document.addEventListener("keydown", onUndo);
     return () => document.removeEventListener("keydown", onUndo);
-  }, []);
+  }, [historyPos]);
+
+  const copyState = () => {
+    let stateCopy = {};
+    Object.keys(state).forEach(stateId => {
+      let stateData = state[stateId];
+      stateCopy[stateId] = {
+        data: JSON.parse(JSON.stringify(stateData.data)),
+        onChangeEnd: stateData.onChangeEnd,
+        onRemove: stateData.onRemove,
+        onMoveUp: stateData.onMoveUp,
+        onMoveDown: stateData.onMoveDown
+      };
+    });
+    return stateCopy;
+  };
 
   React.useEffect(() => {
-    setHistory(h => [...h, state]);
+    setHistory(his => {
+      if (his.length > 4) {
+        his.splice(0, 1);
+      }
+
+      return [...his, copyState()];
+    });
   }, [state]);
 
   React.useEffect(() => {
