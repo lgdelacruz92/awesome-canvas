@@ -15,11 +15,14 @@ const AwesomeCanvas = props => {
   const onChange = data => {
     const childrenReferences = childrenRefs.current;
     childrenReferences.forEach(childRef => {
-      if (childRef.current) {
-        if (history[childRef.current.id].length > 20) {
-          history[childRef.current.id].splice(0, 1);
+      const content = childRef.current;
+      if (content) {
+        let childHistory = history[content.id];
+        const isHistoryFull = childHistory.length > 20;
+        if (isHistoryFull) {
+          childHistory.splice(0, 1);
         }
-        history[childRef.current.id].push(childRef.current);
+        childHistory.push(content);
       }
     });
     setHistory({ ...history });
