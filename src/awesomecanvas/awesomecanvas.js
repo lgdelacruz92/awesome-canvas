@@ -1,13 +1,9 @@
 import React from "react";
-import DNSContainer, { DNSImage } from "dns-container";
+import DNSContainer from "dns-container";
 
 const AwesomeCanvas = props => {
-  const { width, height } = props;
-  return (
-    <DNSContainer width={width} height={height}>
-      {props.children}
-    </DNSContainer>
-  );
+  console.log("children", props.children);
+  return <DNSContainer {...props}>{props.children}</DNSContainer>;
 };
 
 export default AwesomeCanvas;

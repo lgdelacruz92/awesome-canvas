@@ -3,8 +3,8 @@ import { DNSImage } from "dns-container";
 import { toImageObj } from "./toImageObj";
 
 const AwesomeImage = props => {
-  const { id, firebase } = props;
-  const [state, setState] = React.useState(null);
+  const { id, firebase, data } = props;
+  const [state, setState] = React.useState(data);
   React.useEffect(() => {
     firebase
       .collection("ImageContents")
@@ -15,20 +15,18 @@ const AwesomeImage = props => {
           setState(toImageObj(docQuery));
         }
       });
-  }, [id]);
-  console.log("state", state);
+  }, [id, firebase]);
   return (
-    <React.Fragment>
-      {state ? (
-        <DNSImage
-          data={state}
-          onChangeEnd={newData => {
-            console.log("new data", newData);
-          }}
-          onRemove={remove => console.log("remove", remove)}
-        />
-      ) : null}
-    </React.Fragment>
+    <DNSImage
+      {...props}
+      data={state}
+      onChangeEnd={newData => {
+        console.log("new data", newData);
+      }}
+      onRemove={remove => console.log("remove", remove)}
+      onMoveUp={() => {}}
+      onMoveDown={() => {}}
+    />
   );
 };
 
