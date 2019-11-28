@@ -5,7 +5,6 @@ const AwesomeCanvas = props => {
   const _onChangeEnd = newData => {
     const topHistory = history[history.length - 1];
     let newHistory = copyState(topHistory);
-    const historyToChange = newHistory[newData.id];
 
     Object.keys(newHistory).forEach(histKey => {
       if (histKey === newData.id) {
@@ -40,7 +39,7 @@ const AwesomeCanvas = props => {
 
   React.useEffect(() => {
     const onUndo = e => {
-      undo(e);
+      undo(e, setHistory);
     };
     document.addEventListener("keydown", onUndo);
     return () => document.removeEventListener("keydown", onUndo);
