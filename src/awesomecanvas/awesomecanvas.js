@@ -3,6 +3,7 @@ import DNSContainer, { DNSImage } from "dns-container";
 import { copyState, initializeState, onUndo as undo } from "./utils";
 const AwesomeCanvas = props => {
   const _onChangeEnd = newData => {
+    console.log("history", history);
     const topHistory = history[history.length - 1];
     let newHistory = copyState(topHistory);
 

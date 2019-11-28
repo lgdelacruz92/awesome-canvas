@@ -2,7 +2,6 @@ import React from "react";
 import "./App.css";
 import AwesomeCanvas from "./awesomecanvas/awesomecanvas";
 import AwesomeImage from "./awesomecanvas/awesomeimage";
-import firebase from "./firebase";
 import { imageData } from "./data";
 
 function App() {
