@@ -3,7 +3,17 @@ import DNSContainer, { DNSImage } from "dns-container";
 import { copyState, initializeState, onUndo as undo } from "./utils";
 const AwesomeCanvas = props => {
   const _onChangeEnd = newData => {
-    console.log("changed seem", newData);
+    const topHistory = history[history.length - 1];
+    let newHistory = copyState(topHistory);
+    const historyToChange = newHistory[newData.id];
+
+    Object.keys(newHistory).forEach(histKey => {
+      if (histKey === newData.id) {
+        newHistory[histKey].data = { ...newData };
+      }
+    });
+    history.push(newHistory);
+    setHistory([...history]);
   };
 
   const _onRemove = dataId => {
@@ -44,7 +54,7 @@ const AwesomeCanvas = props => {
 
   return (
     <DNSContainer {...props}>
-      {Object.keys(state).map(key => (
+      {Object.keys(state).map((key, i) => (
         <DNSImage
           key={key}
           data={state[key].data}

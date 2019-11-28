@@ -59,3 +59,8 @@ export const onUndo = e => {
     }
   }
 };
+
+export const initializeRefs = props => {
+  const children = React.Children.toArray(props.children);
+  return children.map(child => React.createRef());
+};
