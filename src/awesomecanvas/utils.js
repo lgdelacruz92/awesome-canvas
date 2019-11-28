@@ -46,7 +46,7 @@ export const initializeState = dep => {
 
 let time = 0;
 
-export const onUndo = (e, setHistory) => {
+export const onUndo = (e, setHistory, history) => {
   const isCMDKey = e.key === "Meta";
   if (isCMDKey) {
     time = Date.now();
@@ -55,15 +55,12 @@ export const onUndo = (e, setHistory) => {
   if (e.key === "z") {
     const isPressedAtTheSameTime = Date.now() - time < 200;
     if (isPressedAtTheSameTime) {
-      console.log("undo");
-      setHistory(h => {
-        if (h.length <= 1) {
-          return [...h];
-        } else {
-          h.splice(h.length - 1, 1);
-          return [...h];
-        }
-      });
+      if (history.length > 1) {
+        history.pop();
+        let newHistory = history.map(h => copyState(h));
+        console.log("new history", newHistory);
+        setHistory(newHistory);
+      }
     }
   }
 };

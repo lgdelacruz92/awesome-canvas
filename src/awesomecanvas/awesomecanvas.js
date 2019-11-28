@@ -40,11 +40,11 @@ const AwesomeCanvas = props => {
 
   React.useEffect(() => {
     const onUndo = e => {
-      undo(e, setHistory);
+      undo(e, setHistory, history);
     };
     document.addEventListener("keydown", onUndo);
     return () => document.removeEventListener("keydown", onUndo);
-  }, []);
+  }, [setHistory, history]);
 
   React.useEffect(() => {
     let topHistory = history[history.length - 1];
